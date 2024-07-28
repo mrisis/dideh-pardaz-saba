@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brands</title>
+</head>
+<body>
+    <h1>Brands</h1>
+    <a href="{% url 'brand_create' %}">Add New Brand</a>
+    <ul>
+        {% for brand in brands %}
+        <li>{{ brand.name }} - {{ brand.nationality }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
