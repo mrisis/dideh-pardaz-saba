@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mobiles</title>
+</head>
+<body>
+    <h1>Mobiles</h1>
+    <a href="{% url 'mobile_create' %}">Add New Mobile</a>
+    <ul>
+        {% for mobile in mobiles %}
+        <li>{{ mobile.brand }} - {{ mobile.model }} - {{ mobile.price }} - {{ mobile.color }} - {{ mobile.screen_size }} - {{ mobile.status }} - {{ mobile.manufacturer_country }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
