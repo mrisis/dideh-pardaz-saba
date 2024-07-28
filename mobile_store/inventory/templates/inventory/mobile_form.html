@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>New Mobile</title>
-</head>
-<body>
+{% extends 'inventory/base_template.html' %}
+
+{% block title %}New Mobile{% endblock %}
+
+{% block content %}
     <h1>New Mobile</h1>
-    <form method="post">
-        {% csrf_token %}
+    {% include 'inventory/base_form.html' %}
+    {% block form_content %}
         {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-</body>
-</html>
+    {% endblock %}
+{% endblock %}

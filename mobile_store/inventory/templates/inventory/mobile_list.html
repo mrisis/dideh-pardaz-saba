@@ -1,15 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mobiles</title>
-</head>
-<body>
+{% extends 'inventory/base_template.html' %}
+
+{% block title %}Mobiles{% endblock %}
+
+{% block content %}
     <h1>Mobiles</h1>
-    <a href="{% url 'mobile_create' %}">Add New Mobile</a>
-    <ul>
-        {% for mobile in mobiles %}
-        <li>{{ mobile.brand }} - {{ mobile.model }} - {{ mobile.price }} - {{ mobile.color }} - {{ mobile.screen_size }} - {{ mobile.status }} - {{ mobile.manufacturer_country }}</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+    <a href="{% url 'mobile_create' %}" class="btn btn-success mb-3">Add New Mobile</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Color</th>
+                <th>Screen Size</th>
+                <th>Status</th>
+                <th>Manufacturer Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mobile in mobiles %}
+            <tr>
+                <td>{{ mobile.brand }}</td>
+                <td>{{ mobile.model }}</td>
+                <td>${{ mobile.price }}</td>
+                <td>{{ mobile.color }}</td>
+                <td>{{ mobile.screen_size }}"</td>
+                <td>{{ mobile.status }}</td>
+                <td>{{ mobile.manufacturer_country }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,15 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Brands</title>
-</head>
-<body>
-    <h1>Brands</h1>
-    <a href="{% url 'brand_create' %}">Add New Brand</a>
-    <ul>
+{% extends 'inventory/base_template.html' %}
+
+{% block title %}Brand List{% endblock %}
+
+{% block content %}
+<h1>Brands</h1>
+<a href="{% url 'brand_create' %}" class="btn btn-success mb-3">Add New Brand</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Nationality</th>
+        </tr>
+    </thead>
+    <tbody>
         {% for brand in brands %}
-        <li>{{ brand.name }} - {{ brand.nationality }}</li>
+        <tr>
+            <td>{{ brand.name }}</td>
+            <td>{{ brand.nationality }}</td>
+        </tr>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </tbody>
+</table>
+{% endblock %}

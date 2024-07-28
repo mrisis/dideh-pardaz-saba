@@ -1,32 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Reports</title>
-</head>
-<body>
+{% extends 'inventory/base_template.html' %}
+
+{% block title %}Search Reports{% endblock %}
+
+{% block content %}
     <h1>Search Reports</h1>
 
-    <!-- Form for getting brands with nationality Korea -->
     <h2>1. Brands with Nationality Korea</h2>
-    <form method="get" action="{% url 'search_view' %}">
+    <form method="get" action="{% url 'search_view' %}" class="mb-3">
         <input type="hidden" name="query_type" value="korea_brands">
-        <button type="submit">Get Korea Brands</button>
+        <button type="submit" class="btn btn-primary">Get Korea Brands</button>
     </form>
 
-    <!-- Form for getting mobiles by brand name -->
     <h2>2. Mobiles by Brand Name</h2>
-    <form method="get" action="{% url 'search_view' %}">
+    <form method="get" action="{% url 'search_view' %}" class="mb-3">
         <input type="hidden" name="query_type" value="brand_mobiles">
-        <label for="brand_name">Brand Name:</label>
-        <input type="text" id="brand_name" name="brand_name" required>
-        <button type="submit">Get Mobiles</button>
+        <div class="form-group">
+            <label for="brand_name">Brand Name:</label>
+            <input type="text" id="brand_name" name="brand_name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Get Mobiles</button>
     </form>
 
-    <!-- Form for getting mobiles where nationality matches manufacturer country -->
     <h2>3. Mobiles where Nationality Matches Manufacturer Country</h2>
     <form method="get" action="{% url 'search_view' %}">
         <input type="hidden" name="query_type" value="nationality_match">
-        <button type="submit">Get Mobiles with Nationality Match</button>
+        <button type="submit" class="btn btn-primary">Get Mobiles with Nationality Match</button>
     </form>
-</body>
-</html>
+{% endblock %}
