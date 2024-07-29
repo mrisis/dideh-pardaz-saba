@@ -11,6 +11,24 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class EnvSettings(BaseSettings):
+    debug: bool = False
+    secret_key: str
+    db_name: str
+    db_user: str
+    db_password: str
+    db_host: str
+    db_port: str
+    # add fields you need
+    model_config = SettingsConfigDict(
+        env_file='.env'
+    )
+
+
+env = EnvSettings()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,10 +37,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-30k5t=%93%^a^ma$32nt01oe8tf(j-nk8h6x3b=!4n&2wba0$3'
+SECRET_KEY = env.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.debug
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +56,10 @@ INSTALLED_APPS = [
 
     # local apps
     'inventory',
+
+    # third party apps
+    'rest_framework',
+    'drf_yasg',
 
 ]
 
@@ -74,10 +96,20 @@ WSGI_APPLICATION = 'mobile_store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env.db_name,
+        'USER': env.db_user,
+        'PASSWORD': env.db_password,
+        'HOST': env.db_host,
+        'PORT': env.db_port
     }
 }
 

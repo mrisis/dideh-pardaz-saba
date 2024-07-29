@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import BrandListView, BrandCreateView, MobileListView, MobileCreateView, SearchView
 
 urlpatterns = [
@@ -7,5 +7,6 @@ urlpatterns = [
     path('mobiles/', MobileListView.as_view(), name='mobile_list'),
     path('mobiles/new/', MobileCreateView.as_view(), name='mobile_create'),
     path('search/', SearchView.as_view(), name='search_view'),
+    path('api/v1/inventory/', include('inventory.api.v1.urls'))
 
 ]
