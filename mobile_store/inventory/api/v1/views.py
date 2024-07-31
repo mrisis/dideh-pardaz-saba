@@ -1,48 +1,41 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404, redirect
 from ...models import Brand, Mobile
-from ...forms import BrandForm, MobileForm
+from .serializers import BrandSerializer, MobileSerializer
+from django.db.models import F
 
 
 class BrandListAPIView(APIView):
     def get(self, request):
-        brands = Brand.objects.all().values('name', 'nationality')
-        return Response(brands)
+        brands = Brand.objects.all()
+        serializer = BrandSerializer(brands, many=True)
+        return Response(serializer.data)
 
 
 class BrandCreateAPIView(APIView):
-    def get(self, request):
-        form = BrandForm()
-        return Response({'form': form.as_p()})
-
     def post(self, request):
-        form = BrandForm(request.data)
-        if form.is_valid():
-            form.save()
+        serializer = BrandSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
             return Response({'message': 'Brand created successfully'}, status=status.HTTP_201_CREATED)
-        return Response({'errors': form.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MobileListAPIView(APIView):
     def get(self, request):
-        mobiles = Mobile.objects.all().values('brand__name', 'model', 'price', 'color', 'screen_size', 'status',
-                                              'manufacturer_country')
-        return Response(mobiles)
+        mobiles = Mobile.objects.all()
+        serializer = MobileSerializer(mobiles, many=True)
+        return Response(serializer.data)
 
 
 class MobileCreateAPIView(APIView):
-    def get(self, request):
-        form = MobileForm()
-        return Response({'form': form.as_p()})
-
     def post(self, request):
-        form = MobileForm(request.data)
-        if form.is_valid():
-            form.save()
+        serializer = MobileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
             return Response({'message': 'Mobile created successfully'}, status=status.HTTP_201_CREATED)
-        return Response({'errors': form.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SearchAPIView(APIView):
@@ -62,19 +55,18 @@ class SearchAPIView(APIView):
             return Response({"error": "Invalid query type"}, status=status.HTTP_400_BAD_REQUEST)
 
     def korea_brands(self):
-        brands = Brand.objects.filter(nationality='Korea').values('name')
-        return Response(brands)
+        brands = Brand.objects.filter(nationality='Korea')
+        serializer = BrandSerializer(brands, many=True)
+        return Response(serializer.data)
 
     def brand_mobiles(self, brand_name):
         if not brand_name:
             return Response({"error": "brand_name parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
-        mobiles = Mobile.objects.filter(brand__name=brand_name).values('model', 'price', 'color', 'screen_size',
-                                                                       'status', 'manufacturer_country')
-        return Response(mobiles)
+        mobiles = Mobile.objects.filter(brand__name=brand_name)
+        serializer = MobileSerializer(mobiles, many=True)
+        return Response(serializer.data)
 
     def nationality_match(self):
-        mobiles = Mobile.objects.filter(brand__nationality=F('manufacturer_country')).values('brand__name', 'model',
-                                                                                             'price', 'color',
-                                                                                             'screen_size', 'status',
-                                                                                             'manufacturer_country')
-        return Response(mobiles)
+        mobiles = Mobile.objects.filter(brand__nationality=F('manufacturer_country'))
+        serializer = MobileSerializer(mobiles, many=True)
+        return Response(serializer.data)
